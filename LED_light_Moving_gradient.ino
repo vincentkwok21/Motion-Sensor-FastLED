@@ -1,48 +1,41 @@
 #include <FastLED.h>
-#define NUM_LEDS 16
-#define LED_PIN 2
-const int trigPin = 9;
-const int echoPin = 10;
-uint8_t hue = 108;
-long duration;
-int distance;
-CRGB leds [NUM_LEDS];
 
-uint8_t paletteIndex = 0;
- // Gradient palette "GMT_hot_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_hot.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 16 bytes of program space.
+#define NUM_LEDS  18
+#define LED_PIN   2
 
-DEFINE_GRADIENT_PALETTE( GMT_hot_gp ) {
-    0,   0,  0,  0,
-   95, 255,  0,  0,
-  191, 255,255,  0,
-  255, 255,255,255};
+CRGB leds[NUM_LEDS];
+uint8_t colorIndex[NUM_LEDS];
 
-CRGBPalette16 myPal = GMT_hot_gp;
+DEFINE_GRADIENT_PALETTE( greenblue_gp ) { 
+  0,   0,  255, 245,
+  46,  0,  21,  255,
+  179, 12, 250, 0,
+  255, 0,  255, 245
+};
+
+CRGBPalette16 greenblue = greenblue_gp;
+
 void setup() {
   FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LEDS);
-  FastLED.setBrightness(10);
-  pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
-  pinMode(echoPin, INPUT); // Sets the echoPin as an Input
-  Serial.begin(9600); // Starts the serial communication
+  FastLED.setBrightness(50);
+
+  //Fill the colorIndex array with random numbers
+  for (int i = 0; i < NUM_LEDS; i++) {
+    colorIndex[i] = random8();
+  }
 }
 
 void loop() {
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
-  distance = duration * 0.034 / 2;
-  hue = distance * 10;
-   Serial.print("Distance: ");
-  Serial.println(distance);
-    FastLED.setCorrection (TypicalPixelString);
+  
+  // Color each pixel from the palette using the index from colorIndex[]
   for (int i = 0; i < NUM_LEDS; i++) {
-    leds[i] = CHSV(255, hue, 255);
+    leds[i] = ColorFromPalette(greenblue, colorIndex[i]);
+  }
+  
+  EVERY_N_MILLISECONDS(5){
+    for (int i = 0; i < NUM_LEDS; i++) {
+      colorIndex[i]++;
+    }
   }
   FastLED.show();
 }
