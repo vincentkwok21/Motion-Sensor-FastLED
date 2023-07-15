@@ -9,14 +9,6 @@ int distance;
 CRGB leds [NUM_LEDS];
 
 uint8_t paletteIndex = 0;
-// Gradient palette "moon_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/pn/tn/moon.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 188 bytes of program space.
-// Gradient palette "usgs_feet_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/usgs/tn/usgs-feet.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 88 bytes of program space.
  // Gradient palette "GMT_hot_gp", originally from
 // http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_hot.png.index.html
 // converted for FastLED with gammas (2.6, 2.2, 2.5)
